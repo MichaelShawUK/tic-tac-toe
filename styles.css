@@ -25,3 +25,11 @@
 .cell:hover {
   background: #ddd;
 }
+
+.token:hover {
+  background: #ddd;
+}
+
+#start-btn {
+  display: none;
+}

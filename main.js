@@ -28,12 +28,6 @@ const gameBoard = (() => {
   return {updateBoard, domCells, cells};
 })();
 
-// gameBoard.updateBoard(1, 'X');
-// gameBoard.updateBoard(4, 'O');
-
-// Make sure only 0-8 can be selected for cell
-// Make tokens O or X
-
 const Player = (name, token) => {
   if (!name) {
     if (setup.players.player1 === null) name = 'Player 1';
@@ -121,6 +115,7 @@ const game = (() => {
       }
     }
     if (checkWin()) alert('winner');
+    if (checkTie()) alert('Tie');
   }
 
   const checkWin = () => {
@@ -143,6 +138,10 @@ const game = (() => {
         return true;
       }
     }      
+  }
+
+  const checkTie = () => {
+    if (!gameBoard.cells.includes(undefined) && !checkWin()) return true;
   }
                           
   return {cellListener};

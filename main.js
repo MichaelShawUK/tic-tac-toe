@@ -1,5 +1,6 @@
 const gameBoard = (() => {
   const cells = Array.apply(null, {length: 9});
+  const domCells = document.querySelectorAll('.cell');
   
   const isFree = (cell) => {
     return Boolean(!cells[cell]);
@@ -8,12 +9,15 @@ const gameBoard = (() => {
   const updateBoard = (cell, token) => {
     if (isFree(cell)) {
       cells[cell] = token;
+      render();
+      return true;
+    } else {
+      render();
+      return false;
     }
-    render();
   }
 
   const render = () => {
-    const domCells = document.querySelectorAll('.cell');
     for (let cell in cells) {
       if (cells[cell]) {
         domCells[cell].textContent = cells[cell];
@@ -21,11 +25,11 @@ const gameBoard = (() => {
     }
   }
 
-  return {updateBoard};
+  return {updateBoard, domCells, cells};
 })();
 
-gameBoard.updateBoard(1, 'X');
-gameBoard.updateBoard(4, 'O');
+// gameBoard.updateBoard(1, 'X');
+// gameBoard.updateBoard(4, 'O');
 
 // Make sure only 0-8 can be selected for cell
 // Make tokens O or X
@@ -48,7 +52,7 @@ const setup = (() => {
   const name = document.getElementById('name');
   const startBtn = document.getElementById('start-btn');
   const startScreen = document.getElementById('start-screen');
-  const gameboard = document.querySelector('.gameboard');
+  const gameboard = document.getElementById('gameboard');
 
 
   const getName = () => {
@@ -96,7 +100,55 @@ const setup = (() => {
   return {getToken, players};
 })();
 
+
+const game = (() => {
+
+  let currentPlayer = null;
+
+  const cellListener = () => {
+    gameBoard.domCells.forEach(cell => {
+      cell.addEventListener('click', getMove)
+    });
+  }
+
+  const getMove = (e) => {
+    if (currentPlayer === null) currentPlayer = setup.players.player1;
+    if (gameBoard.updateBoard(e.target.dataset.index, currentPlayer.token)) {
+      if (currentPlayer === setup.players.player1) {
+        currentPlayer = setup.players.player2;
+      } else if (currentPlayer === setup.players.player2) {
+        currentPlayer = setup.players.player1;
+      }
+    }
+    if (checkWin()) alert('winner');
+  }
+
+  const checkWin = () => {
+    const winLines = [[0, 1, 2],
+                      [3, 4, 5],
+                      [6, 7, 8],
+                      [0, 3, 6],
+                      [1, 4, 7],
+                      [2, 5, 8],
+                      [0, 4, 8],
+                      [2, 4, 6]];
+
+    for (let line of winLines) {
+      let checkLine = [gameBoard.cells[line[0]],
+                       gameBoard.cells[line[1]],
+                       gameBoard.cells[line[2]]]
+
+      let lineToSet = new Set(checkLine);
+      if (lineToSet.size === 1 && lineToSet.values().next().value) {
+        return true;
+      }
+    }      
+  }
+                          
+  return {cellListener};
+})()
+
 setup.getToken();
 
-
+game.cellListener();
 

@@ -6,7 +6,7 @@
   font-family: Arial;
 }
 
-.gameboard {
+#gameboard {
   display: none;
   grid-template-columns: repeat(3, var(--cell-size));
   justify-content: center;

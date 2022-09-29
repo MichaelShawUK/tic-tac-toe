@@ -99,9 +99,11 @@ const game = (() => {
 
   let currentPlayer = null;
 
-  const cellListener = () => {
+  const cellListener = (on) => {
     gameBoard.domCells.forEach(cell => {
-      cell.addEventListener('click', getMove)
+      if (on) {
+        cell.addEventListener('click', getMove)
+      } else cell.removeEventListener('click', getMove);
     });
   }
 
@@ -135,13 +137,17 @@ const game = (() => {
 
       let lineToSet = new Set(checkLine);
       if (lineToSet.size === 1 && lineToSet.values().next().value) {
+        cellListener(false);
         return true;
       }
     }      
   }
 
   const checkTie = () => {
-    if (!gameBoard.cells.includes(undefined) && !checkWin()) return true;
+    if (!gameBoard.cells.includes(undefined) && !checkWin()) {
+      cellListener(false);
+      return true;
+    }
   }
                           
   return {cellListener};
@@ -149,5 +155,5 @@ const game = (() => {
 
 setup.getToken();
 
-game.cellListener();
+game.cellListener(true);
 

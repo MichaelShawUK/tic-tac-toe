@@ -81,13 +81,11 @@ div[data-index='2'], div[data-index='5'], div[data-index='8'] {
   font-weight: bold;
 }
 
-
 .container {
   position: relative;
 }
 
-
-.container div {
+#game-over {
   position: absolute;
   z-index: 1;
   top: -500px;
@@ -100,9 +98,7 @@ div[data-index='2'], div[data-index='5'], div[data-index='8'] {
   box-shadow: 2px 2px 5px black;
   background: rgba(221, 221, 221, 0.95);
   display: none;
-  
-}
-
-#game-over > button {
-  top: -400px;
+  font-weight: bold;
+  font-size: 24px;
+  padding-bottom: 16px;
 }

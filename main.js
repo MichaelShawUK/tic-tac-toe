@@ -21,11 +21,38 @@ const gameBoard = (() => {
     for (let cell in cells) {
       if (cells[cell]) {
         domCells[cell].textContent = cells[cell];
-      }
+      } else domCells[cell].textContent = '';
     }
   }
 
-  return {updateBoard, domCells, cells};
+  const resetBoard = () => {
+    for (let cell in cells) {
+      cells[cell] = null;
+    }
+    for (let cell of domCells) {
+      cell.removeAttribute('style');
+    }
+    render();
+  }
+
+  const replayBtn = document.getElementById('replay');
+  const restartBtn = document.getElementById('restart');
+  const gameOver = document.getElementById('game-over');
+
+  
+
+  const replay = () => {
+    restartBtn.addEventListener('click', () => {
+      location.reload();
+    });
+    replayBtn.addEventListener('click', () => {
+      resetBoard();
+      gameOver.style.display = 'none';
+      game.cellListener(true);
+    })
+  }
+
+  return {updateBoard, domCells, cells, replay};
 })();
 
 const Player = (name, token) => {
@@ -99,7 +126,6 @@ const setup = (() => {
     const player2Name = document.getElementById('player-2-name');
     const player1Token = document.getElementById('player-1-token');
     const player2Token = document.getElementById('player-2-token');
-    console.log(player1Name);
 
     player1Name.textContent = setup.players.player1.name;
     player2Name.textContent = setup.players.player2.name;
@@ -162,8 +188,8 @@ const game = (() => {
 
   const checkTie = () => {
     if (!gameBoard.cells.includes(undefined) && !checkWin()) {
+      if (gameBoard.cells.includes(null)) return false;
       cellListener(false);
-      // announceWinner();
       return true;
     }
   }
@@ -197,7 +223,13 @@ const game = (() => {
       winner = setup.players.player1.name;
     }
     result.textContent = `${winner} WINS!`;
+    gameBoard.replay();
+    player1Info.removeAttribute('style');
+    player2Info.removeAttribute('style');
+    cellListener(true);
   }
+
+  
                           
   return {cellListener};
 })()

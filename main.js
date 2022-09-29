@@ -137,7 +137,9 @@ const game = (() => {
 
       let lineToSet = new Set(checkLine);
       if (lineToSet.size === 1 && lineToSet.values().next().value) {
+        console.log(line);
         cellListener(false);
+        colourLine(line);
         return true;
       }
     }      
@@ -147,6 +149,17 @@ const game = (() => {
     if (!gameBoard.cells.includes(undefined) && !checkWin()) {
       cellListener(false);
       return true;
+    }
+  }
+
+  const colourLine = (line) => {
+    const squares = document.querySelectorAll("div[data-index");
+    for (let square of line) {
+      squares[square].style.background = 'silver';
+      squares[square].style.color = 'white';
+      squares[square].style['text-shadow'] = '2px 2px black';
+
+
     }
   }
                           

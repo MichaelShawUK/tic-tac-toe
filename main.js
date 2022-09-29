@@ -34,12 +34,12 @@ const Player = (name, token) => {
   return {name, token};
 }
 
-const players = {
-  player1: null,
-  player2: null,
-}
-
 const setup = (() => {
+
+  const players = {
+    player1 : null,
+    player2: null,
+  }
 
   const name = document.getElementById('name');
   const startBtn = document.getElementById('start-btn');
@@ -85,7 +85,7 @@ const setup = (() => {
     })
   }
 
-  return {getToken};
+  return {getToken, players};
 })();
 
 setup.getToken();

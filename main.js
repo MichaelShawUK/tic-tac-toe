@@ -31,6 +31,10 @@ gameBoard.updateBoard(4, 'O');
 // Make tokens O or X
 
 const Player = (name, token) => {
+  if (!name) {
+    if (setup.players.player1 === null) name = 'Player 1';
+    else if (setup.players.player2 === null) name = 'Player 2';
+  } 
   return {name, token};
 }
 
@@ -43,6 +47,8 @@ const setup = (() => {
 
   const name = document.getElementById('name');
   const startBtn = document.getElementById('start-btn');
+  const startScreen = document.getElementById('start-screen');
+  const gameboard = document.querySelector('.gameboard');
 
 
   const getName = () => {
@@ -60,14 +66,14 @@ const setup = (() => {
     if (!players.player1) {
       players.player1 = Player(getName(), e.target.textContent);
       player2Setup();
-      createPlayer2();
-    } else return;
+      createPlayer2(); 
+    }
   }
 
   const player2Setup = () => {
     name.value = '';
     name.setAttribute('placeholder', 'Player Two');
-    startBtn.style.display = 'inline-block';
+    startBtn.style.display = 'block';
     const xToken = document.getElementById('X');
     const oToken = document.getElementById('O');
     if (players.player1.token === 'X') {
@@ -82,6 +88,8 @@ const setup = (() => {
       if (players.player1.token === 'X') {
         players.player2 = Player(getName(), 'O');
       } else players.player2 = Player(getName(), 'X');
+      gameboard.style.display = 'grid';
+      startScreen.style.display = 'none';
     })
   }
 
@@ -89,5 +97,6 @@ const setup = (() => {
 })();
 
 setup.getToken();
+
 
 

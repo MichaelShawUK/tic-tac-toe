@@ -20,11 +20,32 @@
     <div class="cell" data-index="7"></div>
     <div class="cell" data-index="8"></div>
   </div>
+  <div id="game-info">
+    <div id="player-1">
+      <div id="player-1-name"></div>
+      <div id="player-1-token"></div>
+    </div>
+    <div id="player-2">
+      <div id="player-2-name"></div>
+      <div id="player-2-token"></div>
+    </div>
+  </div>
   <div id="start-screen">
     <input type="text" name="name" id="name" placeholder="Player One">
-    <div class="token" id="X">X</div>
-    <div class="token" id="O">O</div>
+    <div class="tokens">
+      <div class="token" id="X">X</div>
+      <div class="token" id="O">O</div>
+    </div>
     <button id="start-btn">Start</button>
+  </div>
+  <div class="container">
+    <div id="game-over">
+      <p id="result"></p>
+      <button id="replay">Play Again</button>
+      <button id="restart">Restart Game</button>
+    </div>
+     
+
   </div>
 </body>
 </html>

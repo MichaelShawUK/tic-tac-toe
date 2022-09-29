@@ -79,6 +79,8 @@ const setup = (() => {
     } else if (players.player1.token === 'O') {
       oToken.style.display = 'none';
     }
+    const tokens = document.querySelector('.tokens');
+    tokens.style['grid-template-columns'] = '1fr';
   }
 
   function createPlayer2() {
@@ -88,7 +90,21 @@ const setup = (() => {
       } else players.player2 = Player(getName(), 'X');
       gameboard.style.display = 'grid';
       startScreen.style.display = 'none';
+      init();
     })
+  }
+
+  const init = () => {
+    const player1Name = document.getElementById('player-1-name');
+    const player2Name = document.getElementById('player-2-name');
+    const player1Token = document.getElementById('player-1-token');
+    const player2Token = document.getElementById('player-2-token');
+    console.log(player1Name);
+
+    player1Name.textContent = setup.players.player1.name;
+    player2Name.textContent = setup.players.player2.name;
+    player1Token.textContent = setup.players.player1.token;
+    player2Token.textContent = setup.players.player2.token;
   }
 
   return {getToken, players};
@@ -116,8 +132,8 @@ const game = (() => {
         currentPlayer = setup.players.player1;
       }
     }
-    if (checkWin()) alert('winner');
-    if (checkTie()) alert('Tie');
+    if (checkWin(currentPlayer)) announceWinner(currentPlayer);
+    if (checkTie()) announceWinner('draw');
   }
 
   const checkWin = () => {
@@ -137,7 +153,6 @@ const game = (() => {
 
       let lineToSet = new Set(checkLine);
       if (lineToSet.size === 1 && lineToSet.values().next().value) {
-        console.log(line);
         cellListener(false);
         colourLine(line);
         return true;
@@ -148,25 +163,47 @@ const game = (() => {
   const checkTie = () => {
     if (!gameBoard.cells.includes(undefined) && !checkWin()) {
       cellListener(false);
+      // announceWinner();
       return true;
     }
   }
 
   const colourLine = (line) => {
-    const squares = document.querySelectorAll("div[data-index");
+    const squares = document.querySelectorAll("div[data-index]");
     for (let square of line) {
       squares[square].style.background = 'silver';
       squares[square].style.color = 'white';
       squares[square].style['text-shadow'] = '2px 2px black';
-
-
+      squares[square].style['font-size'] = '120px';
     }
+  }
+
+  const announceWinner = (currentPlayer) => {
+    const gameOver = document.getElementById('game-over');
+    const result = document.getElementById('result');
+    const player1Info = document.getElementById('player-1');
+    const player2Info = document.getElementById('player-2');
+    gameOver.style.display = 'block';
+    let winner;
+    if (currentPlayer === 'draw') {
+      result.textContent = 'Game Tied';
+      return;
+    }
+    if (currentPlayer == setup.players.player1) {
+      player2Info.style.background = '#ddd';
+      winner = setup.players.player2.name;
+    } else if (currentPlayer == setup.players.player2) {
+      player1Info.style.background = '#ddd';
+      winner = setup.players.player1.name;
+    }
+    result.textContent = `${winner} WINS!`;
   }
                           
   return {cellListener};
 })()
 
 setup.getToken();
-
+// game.init();
 game.cellListener(true);
+
 

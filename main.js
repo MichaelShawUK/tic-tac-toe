@@ -39,8 +39,6 @@ const gameBoard = (() => {
   const restartBtn = document.getElementById('restart');
   const gameOver = document.getElementById('game-over');
 
-  
-
   const replay = () => {
     restartBtn.addEventListener('click', () => {
       location.reload();
@@ -74,7 +72,6 @@ const setup = (() => {
   const startBtn = document.getElementById('start-btn');
   const startScreen = document.getElementById('start-screen');
   const gameboard = document.getElementById('gameboard');
-
 
   const getName = () => {
     return name.value;
@@ -151,6 +148,7 @@ const game = (() => {
 
   const getMove = (e) => {
     if (currentPlayer === null) currentPlayer = setup.players.player1;
+
     if (gameBoard.updateBoard(e.target.dataset.index, currentPlayer.token)) {
       if (currentPlayer === setup.players.player1) {
         currentPlayer = setup.players.player2;
@@ -207,35 +205,27 @@ const game = (() => {
   const announceWinner = (currentPlayer) => {
     const gameOver = document.getElementById('game-over');
     const result = document.getElementById('result');
-    const player1Info = document.getElementById('player-1');
-    const player2Info = document.getElementById('player-2');
+    
     gameOver.style.display = 'block';
     let winner;
     if (currentPlayer === 'draw') {
       result.textContent = 'Game Tied';
+      gameBoard.replay();
       return;
     }
     if (currentPlayer == setup.players.player1) {
-      player2Info.style.background = '#ddd';
       winner = setup.players.player2.name;
     } else if (currentPlayer == setup.players.player2) {
-      player1Info.style.background = '#ddd';
       winner = setup.players.player1.name;
     }
     result.textContent = `${winner} WINS!`;
     gameBoard.replay();
-    player1Info.removeAttribute('style');
-    player2Info.removeAttribute('style');
     cellListener(true);
-  }
-
-  
-                          
+  }                
   return {cellListener};
 })()
 
 setup.getToken();
-// game.init();
 game.cellListener(true);
 
 
